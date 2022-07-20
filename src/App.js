@@ -17,7 +17,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<Datetime locale="es" />
+				<Datetime locale="es" preventNavigation={true}/>
 			</div>
 		);
 	}

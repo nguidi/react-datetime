@@ -24,6 +24,7 @@ export default class Datetime extends React.Component {
 		initialValue: datetype,
 		initialViewDate: datetype,
 		initialViewMode: TYPES.oneOf([viewModes.YEARS, viewModes.MONTHS, viewModes.DAYS, viewModes.TIME]),
+		preventNavigation: TYPES.bool,
 		onOpen: TYPES.func,
 		onClose: TYPES.func,
 		onChange: TYPES.func,
@@ -62,6 +63,7 @@ export default class Datetime extends React.Component {
 		onBeforeNavigate: function(next) { return next; }, 
 		onNavigateBack: nofn,
 		onNavigateForward: nofn,
+		preventNavigation: false,
 		dateFormat: true,
 		timeFormat: true,
 		utc: false,
@@ -349,7 +351,7 @@ export default class Datetime extends React.Component {
 			viewDate.year( parseInt( e.target.getAttribute('data-year'), 10 ) );
 		}
 
-		let update = {viewDate: viewDate};
+		let update = this.props.preventNavigation ? {} : {viewDate: viewDate};
 		if ( currentView === updateOnView ) {
 			update.selectedDate = viewDate.clone();
 			update.inputValue = viewDate.format( this.getFormat('datetime') );
@@ -387,7 +389,7 @@ export default class Datetime extends React.Component {
 		let date = (this.getSelectedDate() || this.state.viewDate).clone();
 		
 		date[ type ]( value );
-
+		
 		if ( !this.props.value ) {
 			this.setState({
 				selectedDate: date,
